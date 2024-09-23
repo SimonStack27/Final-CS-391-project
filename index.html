@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farm Management Dashboard</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #35372D;
+            color: #ededf2;
+        }
+        .container {
+            margin-top: 20px;
+        }
+        .dashboard-option {
+            background-color: #444654;
+            color: #ededf2;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+        }
+        .dashboard-option:hover {
+            background-color: #21232e;
+        }
+        .input-group input, .input-group select {
+            background-color: #444654;
+            color: #ededf2;
+            border: none;
+        }
+        .submit-btn {
+            background-color: #21232e;
+            color: white;
+        }
+        #taskFormContainer, #chatContainer, #animalFormContainer, #soilHealthFormContainer {
+            display: none; /* Initially hidden */
+        }
+        table td, table th {
+            color: black; /* Ensures text in table is black */
+        }
+        .task-table, .animal-table {
+            background-color: #f5f5f5;
+            color: black;
+        }
+        #chat {
+            height: 400px;
+            overflow-y: scroll;
+            background-color: #444654;
+        }
+        .list-group-item {
+            border-radius: 5px;
+            background-color: #444654;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Farm Management Dashboard</h2>
+        <hr>
+        <div class="row">
+            <!-- Weather Forecast -->
+            
+            <!-- Fertilizer Recommendation -->
+            <div class="col-md-6">
+                <div class="dashboard-option" id="fertilizerOption">
+                    <h3>Fertilizer Recommendations</h3>
+                    <p>Get fertilizer suggestions based on field makeup.</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <!-- Animal Tracking -->
+            <div class="col-md-6">
+                <div class="dashboard-option" id="animalTrackingOption">
+                    <h3>Animal Tracking</h3>
+                    <p>Monitor the health and location of your animals.</p>
+                </div>
+            </div>
+            <!-- Task Logging System -->
+            <div class="col-md-6">
+                <div class="dashboard-option" id="taskLoggingOption">
+                    <h3>Task Logging</h3>
+                    <p>Log and manage farm tasks.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Soil Health Monitoring -->
+            <div class="col-md-6">
+                <div class="dashboard-option" id="soilHealthOption">
+                    <h3>Soil Health Monitoring</h3>
+                    <p>Monitor soil health and get recommendations.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Animal Tracking Form (Initially hidden) -->
+        <div id="animalFormContainer">
+            <h2>Animal Tracking System</h2>
+            <hr>
+            <form id="animalForm">
+                <div class="input-group">
+                    <span class="input-group-addon">Gender</span>
+                    <select id="animalGender" class="form-control">
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">Animal #</span>
+                    <input type="text" id="animalNumber" class="form-control" placeholder="Animal Number" required>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">Bred Date</span>
+                    <input type="date" id="bredDate" class="form-control" required>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">Birth Date</span>
+                    <input type="text" id="birthDate" class="form-control" readonly>
+                </div>
+                <button type="submit" class="btn btn-default submit-btn">Add Animal</button>
+            </form>
+
+            <!-- Animal Table -->
+            <hr>
+            <table class="table table-striped animal-table" id="animalTable">
+                <thead>
+                    <tr>
+                        <th>Gender</th>
+                        <th>Animal #</th>
+                        <th>Bred Date</th>
+                        <th>Birth Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Animal records will be dynamically added here -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Task Logging Form (Initially hidden) -->
+        <div id="taskFormContainer">
+            <h2>Task Logging System</h2>
+            <hr>
+            <form id="taskForm">
+                <div class="input-group">
+                    <span class="input-group-addon">Date</span>
+                    <input type="date" id="taskDate" class="form-control" required>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">Task</span>
+                    <input type="text" id="taskName" class="form-control" placeholder="Task name" required>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">Priority</span>
+                    <select id="taskPriority" class="form-control">
+                        <option value="High">High</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Low">Low</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">Completion %</span>
+                    <input type="number" id="taskCompletion" class="form-control" min="0" max="100" placeholder="0" required>
+                </div>
+                <button type="submit" class="btn btn-default submit-btn">Log Task</button>
+            </form>
+
+            <!-- Task Table -->
+            <hr>
+            <table class="table table-striped task-table" id="taskTable">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Task</th>
+                        <th>Priority Ranking</th>
+                        <th>Completion %</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Tasks will be dynamically added here -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Soil Health Form (Initially hidden) -->
+        <div id="soilHealthFormContainer" style="display: none;">
+            <h2>Soil Health Monitoring</h2>
+            <hr>
+            <form id="soilHealthForm">
+                <div class="input-group">
+                    <span class="input-group-addon">Field Name</span>
+                    <input type="text" id="fieldName" class="form-control" placeholder="Field Name" required>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">pH Level</span>
+                    <input type="number" id="soilPH" class="form-control" placeholder="Soil pH" min="0" max="14" step="0.01" required>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">Nitrogen (ppm)</span>
+                    <input type="number" id="soilNitrogen" class="form-control" placeholder="Nitrogen" required>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">Phosphorus (ppm)</span>
+                    <input type="number" id="soilPhosphorus" class="form-control" placeholder="Phosphorus" required>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">Potassium (ppm)</span>
+                    <input type="number" id="soilPotassium" class="form-control" placeholder="Potassium" required>
+                </div>
+                <button type="submit" class="btn btn-default submit-btn">Log Soil Data</button>
+            </form>
+
+            <!-- Table to Display Logged Soil Health Data -->
+            <hr>
+            <table class="table table-striped" id="soilHealthTable">
+                <thead>
+                    <tr>
+                        <th>Field Name</th>
+                        <th>pH Level</th>
+                        <th>Nitrogen (ppm)</th>
+                        <th>Phosphorus (ppm)</th>
+                        <th>Potassium (ppm)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Soil health records will be dynamically added here -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Chat Interface for Fertilizer Recommendations (Initially hidden) -->
+        <div id="chatContainer">
+            <h2>Fertilizer recommendations</h2>
+            <hr>
+            <div class="panel panel-default">
+                <div class="panel-heading">Chat Messages</div>
+                <div class="panel-body" id="chat">
+                    <ul class="list-group"></ul>
+                </div>
+            </div>
+            <div class="input-group">
+                <input type="text" id="userInput" class="form-control">
+                <span class="input-group-btn">
+                    <button class="btn btn-default submit-btn" id="submit">Submit</button>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            // Store tasks, animals, and soil health in memory
+            var tasks = [];
+            var animals = [];
+            var soilHealthRecords = [];
+
+            // Show Task Form when the task logging option is clicked
+            $("#taskLoggingOption").click(function() {
+                $("#taskFormContainer").toggle();
+            });
+
+            // Show Animal Tracking Form when clicked
+            $("#animalTrackingOption").click(function() {
+                $("#animalFormContainer").toggle(); // Toggle visibility
+            });
+
+            // Show Chat Window when Fertilizer Recommendations is clicked
+            $("#fertilizerOption").click(function(){
+                $("#chatContainer").toggle(); // Toggle visibility of the chat container
+            });
+
+            // Show Soil Health Form when clicked
+            $("#soilHealthOption").click(function() {
+                $("#soilHealthFormContainer").toggle();
+            });
+
+            // Handle chat input for fertilizer recommendations
+            $("#submit").click(function(){
+                var userInput = $("#userInput").val();
+                $.get("/get?msg=" + userInput, function(data){
+                    $("#chat").append("<li class='list-group-item'><b>You:</b> " + userInput + "</li>");
+                    $("#chat").append("<li class='list-group-item'><b>OpenAI:</b> " + data + "</li>");
+                    $("#userInput").val(""); // Clear the input field after submitting
+                });
+            });
+
+            // Handle task submission
+            $("#taskForm").submit(function(event) {
+                event.preventDefault();
+
+                var date = $("#taskDate").val();
+                var task = $("#taskName").val();
+                var priority = $("#taskPriority").val();
+                var completion = $("#taskCompletion").val();
+
+                // Store the task in memory
+                var newTask = {
+                    date: date,
+                    task: task,
+                    priority: priority,
+                    completion: completion
+                };
+                tasks.push(newTask);
+
+                // Update the table with tasks
+                updateTaskTable();
+
+                // Reset the form
+                $("#taskForm")[0].reset();
+            });
+
+            // Function to update the task table
+            function updateTaskTable() {
+                $("#taskTable tbody").empty();  // Clear the table
+
+                tasks.forEach(function(task, index) {
+                    var taskRow = `
+                        <tr>
+                            <td>${task.date}</td>
+                            <td>${task.task}</td>
+                            <td>${task.priority}</td>
+                            <td><input type="number" value="${task.completion}" min="0" max="100" class="form-control completion-input" data-index="${index}"></td>
+                            <td><button class="btn btn-danger delete-btn" data-index="${index}">Delete</button></td>
+                        </tr>
+                    `;
+                    $("#taskTable tbody").append(taskRow);
+                });
+            }
+
+            // Handle task deletion
+            $(document).on("click", ".delete-btn", function() {
+                var taskIndex = $(this).data("index");
+                tasks.splice(taskIndex, 1);  // Remove the task from the array
+                updateTaskTable();  // Update the table
+            });
+
+            // Handle completion percentage updates
+            $(document).on("input", ".completion-input", function() {
+                var taskIndex = $(this).data("index");
+                tasks[taskIndex].completion = $(this).val();  // Update the completion percentage in the array
+                console.log("Task " + taskIndex + " completion updated to: " + tasks[taskIndex].completion + "%");
+            });
+
+            // Automatically calculate and display the birthdate when bred date is entered
+            $("#bredDate").change(function() {
+                var bredDate = $(this).val();
+                if (bredDate) {
+                    var birthDate = calculatePigBirthdate(bredDate);
+                    $("#birthDate").val(birthDate);
+                }
+            });
+
+            // Calculate birthdate for pigs based on bred date (3 months, 3 weeks, 3 days)
+            function calculatePigBirthdate(bredDate) {
+                const bred = new Date(bredDate);
+                const birthDate = new Date(bred.setMonth(bred.getMonth() + 3)); // Add 3 months
+                birthDate.setDate(birthDate.getDate() + (3 * 7) + 3); // Add 3 weeks and 3 days
+                return birthDate.toISOString().split('T')[0]; // Return date in YYYY-MM-DD format
+            }
+
+            // Handle animal submission
+            $("#animalForm").submit(function(event) {
+                event.preventDefault();
+
+                var gender = $("#animalGender").val();
+                var number = $("#animalNumber").val();
+                var bredDate = $("#bredDate").val();
+                var birthDate = calculatePigBirthdate(bredDate);
+
+                // Store the animal in memory
+                var newAnimal = {
+                    gender: gender,
+                    number: number,
+                    bredDate: bredDate,
+                    birthDate: birthDate
+                };
+                animals.push(newAnimal);
+
+                // Update the table with animals
+                updateAnimalTable();
+
+                // Reset the form
+                $("#animalForm")[0].reset();
+                $("#birthDate").val(""); // Clear the birthdate field
+            });
+
+            // Function to update the animal table
+            function updateAnimalTable() {
+                $("#animalTable tbody").empty();  // Clear the table
+
+                animals.forEach(function(animal) {
+                    var animalRow = `
+                        <tr>
+                            <td>${animal.gender}</td>
+                            <td>${animal.number}</td>
+                            <td>${animal.bredDate}</td>
+                            <td>${animal.birthDate}</td>
+                        </tr>
+                    `;
+                    $("#animalTable tbody").append(animalRow);
+                });
+            }
+
+            // Handle soil health submission
+            $("#soilHealthForm").submit(function(event) {
+                event.preventDefault();
+
+                var fieldName = $("#fieldName").val();
+                var soilPH = $("#soilPH").val();
+                var soilNitrogen = $("#soilNitrogen").val();
+                var soilPhosphorus = $("#soilPhosphorus").val();
+                var soilPotassium = $("#soilPotassium").val();
+
+                // Store the soil health record in memory
+                var newSoilRecord = {
+                    fieldName: fieldName,
+                    soilPH: soilPH,
+                    soilNitrogen: soilNitrogen,
+                    soilPhosphorus: soilPhosphorus,
+                    soilPotassium: soilPotassium
+                };
+                soilHealthRecords.push(newSoilRecord);
+
+                // Update the soil health table with records
+                updateSoilHealthTable();
+
+                // Reset the form
+                $("#soilHealthForm")[0].reset();
+            });
+
+            // Function to update the soil health table
+            function updateSoilHealthTable() {
+                $("#soilHealthTable tbody").empty();  // Clear the table
+
+                soilHealthRecords.forEach(function(record) {
+                    var soilHealthRow = `
+                        <tr>
+                            <td>${record.fieldName}</td>
+                            <td>${record.soilPH}</td>
+                            <td>${record.soilNitrogen}</td>
+                            <td>${record.soilPhosphorus}</td>
+                            <td>${record.soilPotassium}</td>
+                        </tr>
+                    `;
+                    $("#soilHealthTable tbody").append(soilHealthRow);
+                });
+            }
+
+            // Example: Call the weather API
+            $("#weatherOption").click(function(){
+                $.get("/weather", function(data){
+                    alert("Current Weather: " + data.current.condition.text + ", " + data.current.temp_c + "°C");
+                });
+            });
+        });
+    </script>
+</body>
+</html>
